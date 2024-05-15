@@ -13,50 +13,35 @@
 #include <unistd.h>
 #include <fcntl.h>
 
-#define BUFFER_SIZE 4096
-
-void	display_error(char *message)
+void	ft_display_file(int fd)
 {
-	while (*message)
-	{
-		write(2, message, 1);
-		message++;
-	}
-	write(2, "\n", 1);
+	char	buffer;
+
+	while (read(fd, &buffer, 1))
+		write(1, &buffer, 1);
 }
 
-void	display_file(char *filename)
+int	main(int ac, char **av)
 {
-	int		fd;
-	int		bytes_read;
-	char	buffer[BUFFER_SIZE];
+	int	fd;
 
-	fd = open(filename, O_RDONLY);
+	if (ac == 1)
+	{
+		write(2, "File name missing.\n", 19);
+		return (-1);
+	}
+	if (ac > 2)
+	{
+		write(2, "Too many arguments.\n", 20);
+		return (-1);
+	}
+	fd = open(av[1], O_RDONLY);
 	if (fd == -1)
 	{
-		display_error("Cannot read file.");
+		write(2, "Cannot read file.\n", 18);
+		return (-1);
 	}
-	bytes_read = read(fd, buffer, BUFFER_SIZE);
-	while (bytes_read > 0)
-	{
-		write(1, buffer, bytes_read);
-	}
+	ft_display_file(fd);
 	close(fd);
-}
-
-int	main(int argc, char **argv)
-{
-	if (argc < 2)
-	{
-		display_error("File name missing.");
-	}
-	else if (argc > 2)
-	{
-		display_error("Too many arguments.");
-	}
-	else
-	{
-		display_file(argv[1]);
-	}
 	return (0);
 }

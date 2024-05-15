@@ -1,37 +1,25 @@
-# Nom du binaire
+SRC = ft_display_file.c
+
 NAME = ft_display_file
 
-# Fichiers source
-SRCS = ft_display_file.c
+OBJ = ${SRC:.c=.o}
 
-# Fichiers objets
-OBJS = $(SRCS:.c=.o)
+CC = cc -Wall -Wextra -Werror
 
-# Compilateur et options
-CC = gcc
-CFLAGS = -Wall -Wextra -Werror
-
-# Règle par défaut
-all: $(NAME)
-
-# Compilation du binaire
-$(NAME): $(OBJS)
-	$(CC) $(CFLAGS) -o $@ $^
-
-# Règle pour les fichiers objets
 %.o: %.c
-	$(CC) $(CFLAGS) -c $< -o $@
+	${CC} -c $< -o $@
 
-# Nettoyage des fichiers objets
+${NAME}: ${OBJ}
+	${CC} ${OBJ} -o ${NAME}
+
+all: ${NAME}
+
 clean:
-	rm -f $(OBJS)
+	rm -f ${OBJ}
 
-# Nettoyage des fichiers objets et du binaire
 fclean: clean
-	rm -f $(NAME)
+	rm -f ${NAME}
 
-# Recompilation complète
-re: fclean all
+re: fclean a;;
 
-# Indication que ces cibles ne sont pas des fichiers
 .PHONY: all clean fclean re
